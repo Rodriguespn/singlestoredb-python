@@ -37,7 +37,6 @@ DB_TYPEMAP: Dict[str, Tuple[Type[Any], Dict[str, Any], Callable[[Any], Any]]] = 
     float=(float, {}, float),
     double=(float, {}, float),
     datetime=(datetime.datetime, {}, parser.parse),  # noqa
-    datetime=(datetime.datetime, {}, parser.parse),  # noqa
     time=(datetime.timedelta, {}, lambda x: parser.parse(x).time()),  # noqa
     date=(datetime.date, {}, lambda x: parser.parse(x).date()),  # noqa
     timestamp=(datetime.datetime, {}, parser.parse),  # noqa
