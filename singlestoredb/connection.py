@@ -31,6 +31,7 @@ except ImportError:
         def itertuples(self, *args: Any, **kwargs: Any) -> None:
             pass
 
+from . import dbobjects
 from . import auth
 from . import exceptions
 from .config import get_option
@@ -1287,6 +1288,8 @@ class Connection(metaclass=abc.ABCMeta):
     def show(self) -> ShowAccessor:
         """Access server properties managed by the SHOW statement."""
         return ShowAccessor(self)
+
+    dbs = property(dbobjects.dbs)
 
 
 #

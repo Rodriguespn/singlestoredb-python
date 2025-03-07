@@ -139,9 +139,18 @@ def get_func_names(funcs: str) -> List[Tuple[str, str]]:
 
 def as_tuple(x: Any) -> Any:
     if hasattr(x, 'model_fields'):
-        return tuple(x.model_fields.values())
+        return tuple(x.model_dump().values())
     if dataclasses.is_dataclass(x):
         return dataclasses.astuple(x)
+    return x
+
+
+def as_list_of_tuples(x: Any) -> Any:
+    if isinstance(x, (list, tuple)) and len(x) > 0:
+        if hasattr(x[0], 'model_fields'):
+            return [tuple(y.model_dump().values()) for y in x]
+        if dataclasses.is_dataclass(x[0]):
+            return [dataclasses.astuple(y) for y in x]
     return x
 
 
@@ -183,7 +192,7 @@ def make_func(
                 out_ids: List[int] = []
                 out = []
                 for i, res in zip(row_ids, func_map(func, rows)):
-                    out.extend(as_tuple(res))
+                    out.extend(as_list_of_tuples(res))
                     out_ids.extend([row_ids[i]] * (len(out)-len(out_ids)))
                 return out_ids, out
 
